@@ -52,27 +52,11 @@ b(mutex)
 n+x(mutex)
 ```
 
-Thread A
+Thread X
 ```
 mutex.acquire()
-count = count + 1
+critical section
 mutex.release()
 ```
-
-Thread B
-```
-mutex.acuire()
-count = count() + 1
-mutex.release()
-```
-
-Thread N+X 
-```
-mutex.acuire()
-count = count() + 1
-mutex.release()
-```
-
-
 
 
