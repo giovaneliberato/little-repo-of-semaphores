@@ -1,4 +1,4 @@
-Puzzle: Add semaphores to the following example to enforce mutual exclusion to shared variable `count`
+*Puzzle:* Add semaphores to the following example to enforce mutual exclusion to shared variable `count`
 
 Thread A
 ```
@@ -10,7 +10,7 @@ Thread B
 count = count + 1
 ```
 
-Answer:
+*Answer:*
 
 Main
 ```
@@ -33,7 +33,7 @@ mutex.acuire()
 count = count() + 1
 mutex.release()
 ```
-
+------------------------------------
 
 
 
