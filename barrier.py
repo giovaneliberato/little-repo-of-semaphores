@@ -2,29 +2,30 @@
 
 import threading
 
+count = 0
 
-def wait_for_all(threads):
-    while True:
-        for i in range(len(threads)):
-            if threads[i].acquire():
-                threads.pop(i)
-        break
+def thread(char, n, mutex, barrier):
+    with mutex:
+        print("RENDEZVOUS %s" % char)
 
-def thread(char, done, correlated_done):
-    print("STATEMENT %s1" % char)
-    print("RELEASE %s" % char)
-    done.release()
-    print("WAIT OTHERS %s" % char)
-    wait_for_all(correlated_done)
-    print("STATEMENT %s2" % char)
+
+    barrier.release()
+
+    while barrier._value < n:
+        pass
+
+    global count
+    count += 1
+    print("CHAR %s - COUNT + 1 = %d" % (char, count))
 
 def main():
-    multiplex = threading.Semaphore(0)
-    c_arrived = threading.Semaphore(0)
+    n = 3
+    barrier = threading.Semaphore(0)
+    mutex = threading.Semaphore(n)
 
-    t_A = threading.Thread(target=thread, args=('A', a_arrived, [b_arrived, c_arrived]))
-    t_B = threading.Thread(target=thread, args=('B', b_arrived, [a_arrived, c_arrived]))
-    t_C = threading.Thread(target=thread, args=('C', c_arrived, [a_arrived, b_arrived]))
+    t_A = threading.Thread(target=thread, args=('A', n, mutex, barrier))
+    t_B = threading.Thread(target=thread, args=('B', n, mutex, barrier))
+    t_C = threading.Thread(target=thread, args=('C', n, mutex, barrier))
     t_A.start()
     t_B.start()
     t_C.start()
